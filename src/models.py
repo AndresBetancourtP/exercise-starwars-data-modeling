@@ -1,68 +1,50 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-from eralchemy2 import render_er
+from eralchemy import render_er
 
 Base = declarative_base()
 
-class Usuario(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    user_id = Column(Integer, primary_key=True)
+    user_name = Column(String(80), unique=True, nullable=False)
+    first_name =Column(String(80), nullable=False)
+    last_name =Column(String(80), nullable=False)
+    created_at =Column(String(80))
+    updated_at =Column(String(80))
+    email =Column(String(80),unique=True, nullable=False) 
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Usuario)
+class Planet(Base):
+    __tablename__ = 'planet'
+    planet_id = Column(Integer, primary_key=True)
+    name = Column(String(200))
+    climate = Column(String(200))
+    population = Column(Integer)
+    orbital_period = Column(Integer)
+    diameter= Column(Integer)
 
-class Personajes (Base):
-    __tablename__ = 'Personajes'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250))
-    type = Column(String(250))
-    faccion = Column(String(250))
-    raza = Column(String(250))
-    gender = Column(String(250))
+class Character(Base):
+    __tablename__ = 'character'
+    character_id = Column(Integer, primary_key=True)
+    name =  Column(String(200))
+    birth_year = Column(Integer)
+    gender = Column(String(200))
+    height = Column(Integer)
+    skin_color = Column(String(200))
+    eye_color = Column(String(200))
 
-class Planetas (Base):
-    __tablename__ = 'Planetas'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250))
-    size = Column(String(250))
-    temp = Column(String(250))
-    color = Column(String(250))
-    moon_number = Column(String(250))
-
-class Vehiculos (Base):
-    __tablename__ = 'Vehiculos'
-    id = Column(Integer, primary_key=True)
-    color = Column(String(250))
-    model = Column(String(250))
-    brand = Column(String(250))
-    size = Column(Float(2))
-    passengers = Column(Integer)
-
-class Favorites (Base):
-    __tablename__ = 'Favorites'
-    id = Column(Integer, primary_key=True)
-    vehicle_id = column(Integer, Foreignkey('vehiculo.id'))
-    vehicle_favoritos = (relationship(Vehicles))
-    user_id = column(Integer, ForeignKey('usuario.id'))
-    user_favoritos = (relationship(usuario))
-                                                    
-
-
+class Favorites(Base): 
+    __tablename__ = 'favorites'
+    like_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+    fav_planet_id = Column(Integer, ForeignKey('planet.planet_id'))
+    fav_character_id = Column(Integer, ForeignKey('character.character_id'))
 
     def to_dict(self):
         return {}
